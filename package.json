@@ -1,0 +1,51 @@
+{
+  "name": "kc-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for Kvindo Cloud — manage VMs, volumes, S3, Kubernetes, load balancers, VPNs and more from any MCP-compatible AI client.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kvindo/kc-mcp-server.git"
+  },
+  "homepage": "https://github.com/Kvindo/kc-mcp-server",
+  "bugs": "https://github.com/Kvindo/kc-mcp-server/issues",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "kvindo",
+    "kvindo-cloud",
+    "claude"
+  ],
+  "bin": {
+    "kc-mcp-server": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && chmod +x dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test scripts --ext .ts",
+    "test": "vitest run",
+    "generate": "tsx scripts/generate-resource-types.ts",
+    "drift-check": "tsx scripts/generate-resource-types.ts --check",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "ajv": "^8.17.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.6",
+    "eslint": "^9.15.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.66.0",
+    "vitest": "^2.1.8"
+  }
+}
