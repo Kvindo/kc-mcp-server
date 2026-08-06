@@ -7,6 +7,12 @@ name: Publish to npm
 # ships one, unlike Node 20's bundled npm 10.8.2 (and `npm install -g npm@latest` on Node 20
 # fails outright: current npm requires Node >=22). The rest of the repo still targets Node >=18
 # (package.json engines) — this pin is release-workflow-only.
+#
+# Deliberately no `registry-url` on setup-node: that input unconditionally writes a
+# `//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}` line to .npmrc even when NODE_AUTH_TOKEN
+# is unset, which took precedence over OIDC and broke the publish (signed provenance succeeded,
+# then the actual PUT 404'd on an empty legacy token). Trusted Publishing only kicks in cleanly
+# with no legacy auth configured at all.
 on:
   push:
     tags: ["v*"]
@@ -22,7 +28,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          registry-url: "https://registry.npmjs.org"
           cache: "npm"
       - run: npm ci
       - run: npm run typecheck
