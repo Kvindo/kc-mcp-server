@@ -1,9 +1,11 @@
 name: Publish to npm
 
-# Publishes to npm on every vX.Y.Z tag using npm provenance (OIDC) — no long-lived npm token
-# stored as a secret. Mirrors the kc-sdk-python repo's PyPI Trusted Publishing workflow.
-# One-time setup on npmjs.com: link this repo as a Trusted Publisher for the `kc-mcp-server`
-# package (Settings → Trusted Publishers), or set an NPM_TOKEN secret as a fallback.
+# Publishes to npm on every vX.Y.Z tag using npm Trusted Publishing (OIDC) — no token, no
+# secret. Configured once on npmjs.com (package Settings → Trusted Publisher → GitHub Actions →
+# Kvindo/kc-mcp-server → release.yml → Allow npm publish). Mirrors the kc-sdk-python repo's PyPI
+# Trusted Publishing workflow. Requires a recent npm CLI (11.5.1+) for OIDC support, hence the
+# explicit upgrade step below — the npm version bundled with actions/setup-node's Node 20 is
+# older than that.
 on:
   push:
     tags: ["v*"]
@@ -12,7 +14,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write # required for npm provenance
+      id-token: write # required for OIDC Trusted Publishing + provenance
       contents: read
     steps:
       - uses: actions/checkout@v4
@@ -21,11 +23,10 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
           cache: "npm"
+      - run: npm install -g npm@latest
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
       - run: npm run build
       - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,6 +1,6 @@
 {
   "name": "kc-mcp-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for Kvindo Cloud — manage VMs, volumes, S3, Kubernetes, load balancers, VPNs and more from any MCP-compatible AI client.",
   "type": "module",
   "license": "MIT",
