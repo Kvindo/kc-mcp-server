@@ -3,16 +3,15 @@ name: Publish to npm
 # Publishes to npm on every vX.Y.Z tag using npm Trusted Publishing (OIDC) — no token, no
 # secret. Configured once on npmjs.com (package Settings → Trusted Publisher → GitHub Actions →
 # Kvindo/kc-mcp-server → release.yml → Allow npm publish). Mirrors the kc-sdk-python repo's PyPI
-# Trusted Publishing workflow. Requires a recent npm CLI (11.5.1+) for OIDC support — Node 22
-# ships one, unlike Node 20's bundled npm 10.8.2 (and `npm install -g npm@latest` on Node 20
-# fails outright: current npm requires Node >=22). The rest of the repo still targets Node >=18
-# (package.json engines) — this pin is release-workflow-only.
+# Trusted Publishing workflow.
 #
-# Deliberately no `registry-url` on setup-node: that input unconditionally writes a
-# `//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}` line to .npmrc even when NODE_AUTH_TOKEN
-# is unset, which took precedence over OIDC and broke the publish (signed provenance succeeded,
-# then the actual PUT 404'd on an empty legacy token). Trusted Publishing only kicks in cleanly
-# with no legacy auth configured at all.
+# Per npm's docs (npmjs.com trusted-publishers): requires npm CLI >=11.5.1 + Node >=22.14.0,
+# `registry-url` MUST be set on setup-node (needed for OIDC detection, not just legacy auth),
+# and NODE_AUTH_TOKEN must NOT be set anywhere — trusted publishing is disabled entirely if a
+# legacy authToken (even an unresolved/empty one) ends up in .npmrc. Node 22's bundled npm was
+# still below 11.5.1 and silently fell back to legacy (empty-token) auth — 404 on the registry
+# PUT even though provenance signing succeeded — hence the explicit `npm install -g npm@^11`
+# pin below (not `@latest`: current npm major requires Node >=24, one bump ahead of this pin).
 on:
   push:
     tags: ["v*"]
@@ -28,7 +27,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          registry-url: "https://registry.npmjs.org"
           cache: "npm"
+      - run: npm install -g npm@^11
+      - run: npm --version
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
