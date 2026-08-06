@@ -13,9 +13,19 @@
   "keywords": [
     "mcp",
     "model-context-protocol",
+    "mcp-server",
     "kvindo",
     "kvindo-cloud",
-    "claude"
+    "claude",
+    "claude-desktop",
+    "claude-code",
+    "ai-agent",
+    "llm-tools",
+    "anthropic",
+    "cloud",
+    "cloud-api",
+    "devops",
+    "infrastructure-as-code"
   ],
   "bin": {
     "kc-mcp-server": "dist/index.js"

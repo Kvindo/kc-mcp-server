@@ -1,6 +1,10 @@
-# kc-mcp-server
+# kc-mcp-server — Kvindo Cloud MCP Server
 
-An [MCP](https://modelcontextprotocol.io) (Model Context Protocol) server for [Kvindo Cloud](https://cloud.kvindo.com) — lets any MCP-compatible AI client (Claude Desktop, Claude Code, etc.) list, inspect, create, update, and delete your Kvindo Cloud resources (VMs, Volumes, S3 buckets, Kubernetes, Load Balancers, VPNs, PostgreSQL, and more) conversationally.
+[![npm version](https://img.shields.io/npm/v/kc-mcp-server)](https://www.npmjs.com/package/kc-mcp-server)
+[![License: MIT](https://img.shields.io/npm/l/kc-mcp-server)](LICENSE)
+[![Node.js](https://img.shields.io/node/v/kc-mcp-server)](https://www.npmjs.com/package/kc-mcp-server)
+
+An [MCP](https://modelcontextprotocol.io) (Model Context Protocol) server for [Kvindo Cloud](https://cloud.kvindo.com) — lets any MCP-compatible AI client (**Claude Desktop**, **Claude Code**, and other LLM agents/AI tools) list, inspect, create, update, and delete your Kvindo Cloud resources (VMs, Volumes, S3 buckets, Kubernetes, Load Balancers, VPNs, PostgreSQL, and more) conversationally.
 
 It's a thin wrapper over Kvindo Cloud's own [REST API](https://cloud-api.kvindo.ru/swagger/index.html) — the same API the [`kc` CLI](https://github.com/Kvindo/kc-cli), [Terraform provider](https://github.com/Kvindo/terraform-provider-kvindo), and [Python SDK](https://github.com/Kvindo/kc-sdk-python) already use.
 
